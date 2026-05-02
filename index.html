@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Sorting Visualizer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- MathJax for LaTeX rendering -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+<body>
+    <header class="dashboard-header">
+        <!-- Left Side: Educational Information -->
+        <div class="header-info">
+            <h1>Advanced Sorting Algorithm Visualizer</h1>
+            <div class="info-content">
+                <p><strong>📖 Definition:</strong> A sorting algorithm is a method for reorganizing a large number of items into a specific order, such as numerical (highest-to-lowest) or lexicographical.</p>
+                <p><strong>🚀 Applications:</strong> Used heavily in database optimization, enabling binary search, data compression, and rendering computer graphics.</p>
+                <p><strong>💡 Fact:</strong> Modern languages like Python and Java use hybrid algorithms (like Timsort/Powersort) that combine the best parts of Merge and Insertion sort!</p>
+            </div>
+        </div>
+
+        <!-- Right Side: Controls & Settings -->
+        <div class="header-controls">
+            <h3>⚙️ Settings</h3>
+            <div class="controls-grid">
+                
+                <!-- Column 1: Array Generation -->
+                <div class="control-column">
+                    <div class="control-group">
+                        <label>Size (2 - 1,000,000):</label>
+                        <input type="number" id="array-size" min="2" max="1000000" value="50">
+                    </div>
+                    <div class="control-group">
+                        <label>Condition:</label>
+                        <select id="array-condition">
+                            <option value="random">Random</option>
+                            <option value="nearly-sorted">Nearly Sorted</option>
+                            <option value="reversed">Reversed</option>
+                            <option value="few-unique">Few Unique</option>
+                        </select>
+                    </div>
+                    <button id="generate-btn">Generate Array</button>
+                </div>
+
+                <!-- Column 2: Algorithm Selection -->
+                <div class="control-column">
+                    <label>Algorithms (Ctrl+Click):</label>
+                    <select id="algo-select" multiple size="7">
+                        <option value="bubble" selected>Bubble Sort</option>
+                        <option value="selection">Selection Sort</option>
+                        <option value="insertion">Insertion Sort</option>
+                        <option value="merge">Merge Sort</option>
+                        <option value="quick">Quick Sort</option>
+                        <option value="radix">Radix Sort</option>
+                        <option value="power">Powersort</option>
+                    </select>
+                </div>
+
+                <!-- Column 3: Playback & Speed -->
+                <div class="control-column playback-column">
+                    <div class="control-group">
+                        <label>Speed:</label>
+                        <input type="range" id="speed-slider" min="1" max="100" value="50">
+                    </div>
+                    <div class="playback-controls">
+                        <button id="btn-reset">⏮ Reset</button>
+                        <button id="btn-step-back">⏪ Step</button>
+                        <button id="btn-play" class="primary">▶ Run</button>
+                        <button id="btn-step-fwd">Step ⏩</button>
+                        <button id="btn-go-end">⏭ End</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <main id="workspaces-container">
+        <!-- Dynamic workspaces for selected algorithms will be injected here -->
+    </main>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
