@@ -228,7 +228,7 @@ class Visualizer {
         this.updateColors(this.currentStep > 0 ? this.actions[this.currentStep - 1] : null);
     }
 
-    goToEnd() {cp 
+    goToEnd() {
         if (this.array.length > 1000) return;
         while (this.currentStep < this.actions.length) {
             this.stepForward(false); 
@@ -240,6 +240,7 @@ class Visualizer {
         this.stepEl.innerText = this.currentStep;
         this.updateColors(null);
     }
+
 
 }
 
