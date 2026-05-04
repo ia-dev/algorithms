@@ -13,6 +13,7 @@
   * [Advanced Sorting Algorithm Visualizer](https://ia-dev.github.io/algorithms/)
     ![Sorting Visualizer UI](https://raw.githubusercontent.com/ia-dev/algorithms/main/res/ui.png)
   * [Colab Notebook](https://github.com/ia-dev/algorithms/blob/main/IA_Sorting_Algorithms.ipynb)
+  * [Presentation](https://www.google.com/url?q=https%3A%2F%2Fdocs.google.com%2Fpresentation%2Fd%2F1yRo9rl9zD8y9onCNZbNm9zz5qGa-yYZsaarTMQ1A8ks%2Fedit%3Fusp%3Dsharing)
 * It prvides an interactive feedback and discussion option.
   - Please use [issues](https://github.com/ia-dev/algorithms/issues) to report mistakes or bugs.
   - Please use [PR](https://github.com/ia-dev/algorithms/pulls) to contribute.
