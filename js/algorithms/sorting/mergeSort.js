@@ -1,34 +1,47 @@
-export function mergeSort(array, ctx, left = 0, right = array.length - 1) {
-    if (left >= right) {
-        if (left === right) ctx.markSorted(left);
-        return;
-    }
-    const mid = Math.floor((left + right) / 2);
-    mergeSort(array, ctx, left, mid);
-    mergeSort(array, ctx, mid + 1, right);
-    
-    let n1 = mid - left + 1;
-    let n2 = right - mid;
-    let L = new Array(n1);
-    let R = new Array(n2);
-    
-    for (let i = 0; i < n1; i++) L[i] = array[left + i];
-    for (let j = 0; j < n2; j++) R[j] = array[mid + 1 + j];
-    
-    let i = 0, j = 0, k = left;
-    while (i < n1 && j < n2) {
-        ctx.compare(left + i, mid + 1 + j); // Highlight comparison
-        if (L[i] <= R[j]) {
-            ctx.write(k, L[i]); // Overwrite instead of swap
-            i++;
-        } else {
-            ctx.write(k, R[j]);
-            j++;
+export function mergeSort(array, ctx, left = 0, right = array.length) {
+    if (right - left > 1) {
+        const mid = left + Math.floor((right - left) / 2);
+        
+        // Recursively sort both halves
+        mergeSort(array, ctx, left, mid);
+        mergeSort(array, ctx, mid, right);
+        
+        // Create temporary arrays mimicking Python's left_half and right_half
+        let left_half = array.slice(left, mid);
+        let right_half = array.slice(mid, right);
+        
+        let i = 0, j = 0, k = left;
+        
+        // Merge the temp arrays back into the main array
+        while (i < left_half.length && j < right_half.length) {
+            ctx.compare(left + i, mid + j); // Trigger visual highlight
+            
+            if (left_half[i] < right_half[j]) {
+                ctx.write(k, left_half[i]);
+                i++;
+            } else {
+                ctx.write(k, right_half[j]);
+                j++;
+            }
+            k++;
         }
-        k++;
+        
+        // Check if any element was left behind
+        while (i < left_half.length) {
+            ctx.write(k, left_half[i]);
+            i++;
+            k++;
+        }
+        
+        while (j < right_half.length) {
+            ctx.write(k, right_half[j]);
+            j++;
+            k++;
+        }
     }
-    while (i < n1) { ctx.write(k, L[i]); i++; k++; }
-    while (j < n2) { ctx.write(k, R[j]); j++; k++; }
     
-    for (let x = left; x <= right; x++) ctx.markSorted(x);
+    // Mark as sorted only on the final outermost call
+    if (left === 0 && right === array.length) {
+        for (let x = 0; x < array.length; x++) ctx.markSorted(x);
+    }
 }

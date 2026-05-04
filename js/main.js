@@ -1,42 +1,46 @@
-import { bubbleSort } from './algorithms/sorting/bubbleSort.js';
-import { quickSort } from './algorithms/sorting/quickSort.js';
 import { selectionSort } from './algorithms/sorting/selectionSort.js';
 import { insertionSort } from './algorithms/sorting/insertionSort.js';
-import { mergeSort } from './algorithms/sorting/mergeSort.js';
+import { shellSort } from './algorithms/sorting/shellSort.js';
+import { bubbleSort } from './algorithms/sorting/bubbleSort.js';
 import { radixSort } from './algorithms/sorting/radixSort.js';
+import { mergeSort } from './algorithms/sorting/mergeSort.js';
+import { quickSort } from './algorithms/sorting/quickSort.js';
 import { powerSort } from './algorithms/sorting/powerSort.js';
 
 const algorithms = { 
-    'bubble': bubbleSort, 'quick': quickSort, 'selection': selectionSort, 
-    'insertion': insertionSort, 'merge': mergeSort, 'radix': radixSort, 'power': powerSort 
+    'selection': selectionSort, 'insertion': insertionSort, 'shell': shellSort, 
+    'bubble': bubbleSort, 'radix': radixSort, 'merge': mergeSort, 
+    'quick': quickSort, 'power': powerSort 
 };
 
 const complexities = {
-    'bubble': { best: 'O(n)', avg: 'O(n²)', worst: 'O(n²)', space: 'O(1)' },
-    'quick': { best: 'O(n log n)', avg: 'O(n log n)', worst: 'O(n²)', space: 'O(log n)' },
     'selection': { best: 'O(n²)', avg: 'O(n²)', worst: 'O(n²)', space: 'O(1)' },
     'insertion': { best: 'O(n)', avg: 'O(n²)', worst: 'O(n²)', space: 'O(1)' },
+    'shell': { best: 'O(n log n)', avg: 'O(n³/²)', worst: 'O(n²)', space: 'O(1)' },
+    'bubble': { best: 'O(n²)', avg: 'O(n²)', worst: 'O(n²)', space: 'O(1)' },
+    'radix': { best: 'O(d(n+k))', avg: 'O(d(n+k))', worst: 'O(d(n+k))', space: 'O(n+k)' },
     'merge': { best: 'O(n log n)', avg: 'O(n log n)', worst: 'O(n log n)', space: 'O(n)' },
-    'radix': { best: 'O(nk)', avg: 'O(nk)', worst: 'O(nk)', space: 'O(n+k)' },
+    'quick': { best: 'O(n log n)', avg: 'O(n log n)', worst: 'O(n²)', space: 'O(log n)' },
     'power': { best: 'O(n)', avg: 'O(n log n)', worst: 'O(n log n)', space: 'O(n)' }
 };
 
 const pseudocodes = {
-    'bubble': String.raw`$$ \begin{array}{l} \textbf{for } i = 0 \text{ to } n-1 \\ \quad \textbf{for } j = 0 \text{ to } n-i-1 \\ \quad \quad \textbf{if } A[j] > A[j+1] \textbf{ then} \\ \quad \quad \quad \text{swap}(A[j], A[j+1]) \end{array} $$`,
+    'selection': String.raw`$$ \begin{array}{l} \hline \mathbf{Algorithm:} \text{ SelectionSort}(L, n) \\ \hline \textbf{for } i \leftarrow 0 \text{ to } n - 2 \textbf{ do:} \\ \quad \textit{min\_idx} \leftarrow i \\ \quad \textbf{for } j \leftarrow i + 1 \text{ to } n - 1 \textbf{ do:} \\ \quad \quad \textbf{if } L[j] < L[\textit{min\_idx}] \textbf{ then} \\ \quad \quad \quad \textit{min\_idx} \leftarrow j \\ \quad \text{swap}(L[i], L[\textit{min\_idx}]) \\ \hline \end{array} $$`,
     
-    'selection': String.raw`$$ \begin{array}{l} \textbf{for } i = 0 \text{ to } n-1 \\ \quad \text{min} = i \\ \quad \textbf{for } j = i+1 \text{ to } n \\ \quad \quad \textbf{if } A[j] < A[\text{min}] \textbf{ then } \text{min} = j \\ \quad \text{swap}(A[i], A[\text{min}]) \end{array} $$`,
+    'insertion': String.raw`$$ \begin{array}{l} \hline \mathbf{Algorithm:} \text{ InsertionSort}(L, n) \\ \hline \textbf{for } i \leftarrow 1 \text{ to } n-1 \textbf{ do:} \\ \quad \text{key} \leftarrow L[i] \\ \quad j \leftarrow i - 1 \\ \quad \textbf{while } j \ge 0 \text{ and } L[j] > \text{key} \textbf{ do:} \\ \quad \quad L[j+1] \leftarrow L[j] \\ \quad \quad j \leftarrow j - 1 \\ \quad L[j+1] \leftarrow \text{key} \\ \hline \end{array} $$`,
     
-    'insertion': String.raw`$$ \begin{array}{l} \textbf{for } i = 1 \text{ to } n-1 \\ \quad j = i \\ \quad \textbf{while } j > 0 \text{ and } A[j-1] > A[j] \\ \quad \quad \text{swap}(A[j], A[j-1]) \\ \quad \quad j = j - 1 \end{array} $$`,
+    'shell': String.raw`$$ \begin{array}{l} \hline \mathbf{Algorithm:} \text{ ShellSort}(L, n, h) \\ \hline \textbf{while } h < n // 3 \textbf{ do} \\ \quad h \leftarrow 3 * h + 1 \\ \textbf{while } h \ge 1 \textbf{ do} \\ \quad \textbf{for } i \leftarrow h \text{ to } n - 1 \textbf{ do} \\ \quad \quad j \leftarrow i \\ \quad \quad \textbf{while } j \ge h \text{ and } L[j] < L[j - h] \textbf{ do} \\ \quad \quad \quad \text{swap } L[j], L[j - h] \\ \quad \quad \quad j \leftarrow j - h \\ \quad h \leftarrow h // 3 \\ \hline \end{array} $$`,
     
-    'merge': String.raw`$$ \begin{array}{l} \text{MergeSort}(A, L, R) \\ \quad \textbf{if } L < R \textbf{ then} \\ \quad \quad M = (L+R)/2 \\ \quad \quad \text{MergeSort}(A, L, M) \\ \quad \quad \text{MergeSort}(A, M+1, R) \\ \quad \quad \text{Merge}(A, L, M, R) \end{array} $$`,
+    'bubble': String.raw`$$ \begin{array}{ll} \hline \mathbf{Algorithm:} & \text{BubbleSort}(L,n) \\ \hline & \textbf{for } i \leftarrow 0 \text{ to } n-2 \textbf{ do} \\ & \quad \textbf{for } j \leftarrow 0 \text{ to } n-i-2 \textbf{ do} \\ & \quad \quad \textbf{if } L[j] > L[j+1] \textbf{ then} \\ & \quad \quad \quad \text{swap}(L[j], L[j+1]) \\ \hline \end{array} $$`,
     
-    'quick': String.raw`$$ \begin{array}{l} \text{QuickSort}(A, L, R) \\ \quad \textbf{if } L < R \textbf{ then} \\ \quad \quad P = \text{Partition}(A, L, R) \\ \quad \quad \text{QuickSort}(A, L, P-1) \\ \quad \quad \text{QuickSort}(A, P+1, R) \end{array} $$`,
+    'radix': String.raw`$$ \begin{array}{l} \hline \mathbf{Algorithm:} \text{ RadixSort}(L, n) \\ \hline \quad m \leftarrow \text{maximum value in } L \\ \quad \text{exp} \leftarrow 1 \\ \quad \textbf{while } m / \text{exp} > 0 \textbf{ do:} \\ \quad \quad \text{CountingSort}(L, n, \text{exp}) \\ \quad \quad \text{exp} \leftarrow \text{exp} \times 10 \\ \hline \end{array} $$`,
     
-    'radix': String.raw`$$ \begin{array}{l} \text{max} = \text{GetMax}(A) \\ \textbf{for } \text{exp} = 1, 10, 100, \dots \text{ while } \text{max}/\text{exp} > 0 \\ \quad \text{CountingSort}(A, \text{exp}) \end{array} $$`,
+    'merge': String.raw`$$ \begin{array}{l} \hline \mathbf{Algorithm:} \text{ MergeSort}(L, \text{left}, \text{right}) \\ \hline \quad \textbf{if } \text{left} < \text{right} \textbf{ then} \\ \quad \quad \text{mid} \leftarrow \text{left} + (\text{right} - \text{left}) // 2 \\ \quad \quad \text{MergeSort}(L, \text{left}, \text{mid}) \\ \quad \quad \text{MergeSort}(L, \text{mid} + 1, \text{right}) \\ \quad \quad \text{Merge}(L, \text{left}, \text{mid}, \text{right}) \\ \hline \end{array} $$`,
     
-    'power': String.raw`$$ \begin{array}{l} \text{Identify natural runs in } A \\ \textbf{while } \text{more than 1 run exists} \\ \quad \text{Merge adjacent runs based on power} \end{array} $$`
+    'quick': String.raw`$$ \begin{array}{l} \hline \mathbf{Algorithm:} \text{ QuickSort}(L, \text{low}, \text{high}) \\ \hline \quad \textbf{if } \text{low} < \text{high} \textbf{ then} \\ \quad \quad \text{pi} \leftarrow \text{Partition}(L, \text{low}, \text{high}) \\ \quad \quad \text{QuickSort}(L, \text{low}, \text{pi} - 1) \\ \quad \quad \text{QuickSort}(L, \text{pi} + 1, \text{high}) \\ \hline \end{array} $$`,
+    
+    'power': String.raw`$$ \begin{array}{l} \hline \mathbf{Algorithm:} \text{ PowerSort}(L, n) \\ \hline \quad \text{Stack} \leftarrow \text{Empty} \\ \quad \textbf{while } \text{unprocessed elements remain} \textbf{ do:} \\ \quad \quad R \leftarrow \text{Find next natural run in } L \\ \quad \quad p \leftarrow \text{Compute power between top of Stack and } R \\ \quad \quad \textbf{while } \text{Stack has runs and merge conditions are met based on } p \textbf{ do:} \\ \quad \quad \quad \text{Merge top runs in Stack} \\ \quad \quad \text{Push } R \text{ onto Stack} \\ \quad \textbf{while } \text{Stack has more than one run} \textbf{ do:} \\ \quad \quad \text{Merge remaining runs} \\ \hline \end{array} $$`
 };
-
 
 
 let baseArray = [];
@@ -79,12 +83,13 @@ function generateArray() {
     setupWorkspaces();
 }
 
+
 class Visualizer {
     constructor(algoKey, container) {
         this.algoKey = algoKey;
         this.container = container;
         this.array = [...baseArray];
-        this.isSorted = new Array(this.array.length).fill(false); // Track sorted elements
+        this.isSorted = new Array(this.array.length).fill(false);
         this.actions = [];
         this.currentStep = 0;
         
@@ -100,11 +105,10 @@ class Visualizer {
             <div class="algo-workspace">
                 <h3>${this.algoKey.toUpperCase()} SORT</h3>
                 <div class="stats">
-                    <p>Time: <span class="time-val">0</span> | Steps: <span class="step-val">0</span></p>
+                    <p>Time: <span class="time-val">0</span> | Steps: <span class="step-val">0</span> | i: <span class="i-val">-</span> | j: <span class="j-val">-</span></p>
                     <p class="complexity">Best: ${info.best} | Avg: ${info.avg} | Worst: ${info.worst} | Space: ${info.space}</p>
                 </div>
-                <!-- FIX: Added explicit height and position relative here -->
-                <div class="bars-container" style="height: 250px; position: relative; display: flex; align-items: flex-end; width: 100%;"></div>
+                <div class="bars-container" style="height: 250px; position: relative; display: flex; align-items: flex-end; width: 100%; margin-bottom: 20px;"></div>
                 <div class="pseudocode-container">
                     ${code}
                 </div>
@@ -113,9 +117,10 @@ class Visualizer {
         this.barsContainer = this.container.querySelector('.bars-container');
         this.stepEl = this.container.querySelector('.step-val');
         this.timeEl = this.container.querySelector('.time-val');
+        this.iEl = this.container.querySelector('.i-val');
+        this.jEl = this.container.querySelector('.j-val');
         this.renderBars();
     }
-
 
     renderBars() {
         if (this.array.length > 1000) {
@@ -123,16 +128,21 @@ class Visualizer {
             return;
         }
         this.barsContainer.innerHTML = '';
-        this.bars = this.array.map(val => {
+        const showLabels = this.array.length < 11;
+        
+        this.bars = this.array.map((val, idx) => {
             const bar = document.createElement('div');
             bar.className = 'array-bar';
-            // FIX: Calculate exact pixels instead of percentages
             bar.style.height = `${(val / 105) * 250}px`; 
+            
+            if (showLabels) {
+                bar.innerHTML = `<span class="bar-value">${val}</span><span class="bar-index">${idx}</span>`;
+            }
+            
             this.barsContainer.appendChild(bar);
             return bar;
         });
     }
-
 
     recordAlgorithm() {
         let startTime = performance.now();
@@ -147,7 +157,7 @@ class Visualizer {
                 this.actions.push({ type: 'swap', i, j });
                 let t = tempArray[i]; tempArray[i] = tempArray[j]; tempArray[j] = t;
             },
-            write: (i, val) => { // NEW: Allows overwriting values for Merge/Radix sort
+            write: (i, val) => { 
                 this.actions.push({ type: 'write', i, val, oldVal: tempArray[i] });
                 tempArray[i] = val;
             },
@@ -162,37 +172,59 @@ class Visualizer {
 
     updateColors(activeAction) {
         if (this.array.length > 1000) return;
+        
+        // Reset pseudocode highlights
+        this.container.querySelectorAll('.pseudo-compare, .pseudo-swap, .pseudo-write').forEach(el => el.classList.remove('active'));
+
         for(let i = 0; i < this.bars.length; i++) {
             this.bars[i].style.backgroundColor = this.isSorted[i] ? 'var(--bar-sorted)' : 'var(--bar-default)';
         }
+        
         if (activeAction) {
+            // Update i and j labels
+            this.iEl.innerText = activeAction.i !== undefined ? activeAction.i : '-';
+            this.jEl.innerText = activeAction.j !== undefined ? activeAction.j : '-';
+
+            // Highlight corresponding pseudocode step
+            const highlightClass = `.pseudo-${activeAction.type}`;
+            this.container.querySelectorAll(highlightClass).forEach(el => el.classList.add('active'));
+
             if (activeAction.type === 'compare') {
                 this.bars[activeAction.i].style.backgroundColor = 'var(--bar-compare)';
-                this.bars[activeAction.j].style.backgroundColor = 'var(--bar-compare)';
+                if (activeAction.j !== undefined) this.bars[activeAction.j].style.backgroundColor = 'var(--bar-compare)';
             } else if (activeAction.type === 'swap') {
                 this.bars[activeAction.i].style.backgroundColor = 'var(--bar-swap)';
-                this.bars[activeAction.j].style.backgroundColor = 'var(--bar-swap)';
+                if (activeAction.j !== undefined) this.bars[activeAction.j].style.backgroundColor = 'var(--bar-swap)';
             } else if (activeAction.type === 'write') {
-                this.bars[activeAction.i].style.backgroundColor = 'var(--bar-swap)'; // Highlight overwrite
+                this.bars[activeAction.i].style.backgroundColor = 'var(--bar-swap)'; 
             }
+        } else {
+            this.iEl.innerText = '-';
+            this.jEl.innerText = '-';
         }
     }
 
     stepForward(updateDOM = true) {
         if (this.currentStep >= this.actions.length || this.array.length > 1000) return false;
         const action = this.actions[this.currentStep];
+        const showLabels = this.array.length < 11;
         
         if (action.type === 'swap') {
             let t = this.array[action.i]; this.array[action.i] = this.array[action.j]; this.array[action.j] = t;
             if (updateDOM) {
-                // FIX: Use 250px
                 this.bars[action.i].style.height = `${(this.array[action.i] / 105) * 250}px`;
                 this.bars[action.j].style.height = `${(this.array[action.j] / 105) * 250}px`;
+                if (showLabels) {
+                    this.bars[action.i].querySelector('.bar-value').innerText = this.array[action.i];
+                    this.bars[action.j].querySelector('.bar-value').innerText = this.array[action.j];
+                }
             }
         } else if (action.type === 'write') { 
             this.array[action.i] = action.val;
-            // FIX: Use 250px
-            if (updateDOM) this.bars[action.i].style.height = `${(this.array[action.i] / 105) * 250}px`;
+            if (updateDOM) {
+                this.bars[action.i].style.height = `${(this.array[action.i] / 105) * 250}px`;
+                if (showLabels) this.bars[action.i].querySelector('.bar-value').innerText = this.array[action.i];
+            }
         } else if (action.type === 'sorted') {
             this.isSorted[action.i] = true;
         }
@@ -205,21 +237,24 @@ class Visualizer {
         return true;
     }
 
-
     stepBackward() {
         if (this.currentStep <= 0 || this.array.length > 1000) return;
         this.currentStep--;
         const action = this.actions[this.currentStep];
+        const showLabels = this.array.length < 11;
         
         if (action.type === 'swap') {
             let t = this.array[action.i]; this.array[action.i] = this.array[action.j]; this.array[action.j] = t;
-            // FIX: Use 250px
             this.bars[action.i].style.height = `${(this.array[action.i] / 105) * 250}px`;
             this.bars[action.j].style.height = `${(this.array[action.j] / 105) * 250}px`;
+            if (showLabels) {
+                this.bars[action.i].querySelector('.bar-value').innerText = this.array[action.i];
+                this.bars[action.j].querySelector('.bar-value').innerText = this.array[action.j];
+            }
         } else if (action.type === 'write') { 
             this.array[action.i] = action.oldVal;
-            // FIX: Use 250px
             this.bars[action.i].style.height = `${(this.array[action.i] / 105) * 250}px`;
+            if (showLabels) this.bars[action.i].querySelector('.bar-value').innerText = this.array[action.i];
         } else if (action.type === 'sorted') {
             this.isSorted[action.i] = false;
         }
@@ -233,15 +268,14 @@ class Visualizer {
         while (this.currentStep < this.actions.length) {
             this.stepForward(false); 
         }
+        const showLabels = this.array.length < 11;
         for(let i = 0; i < this.bars.length; i++) {
-            // FIX: Use 250px
             this.bars[i].style.height = `${(this.array[i] / 105) * 250}px`;
+            if (showLabels) this.bars[i].querySelector('.bar-value').innerText = this.array[i];
         }
         this.stepEl.innerText = this.currentStep;
         this.updateColors(null);
     }
-
-
 }
 
 function setupWorkspaces() {
